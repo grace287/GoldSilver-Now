@@ -159,6 +159,12 @@
 4. **크롤러 1회**: 프로젝트 루트에서 `python -m crawler.main` (주기: `python -m crawler.main --schedule`). `crawler` 폴더에서 실행 시에는 `python main.py` 만 입력해도 동작함.
 5. **API 확인**: `GET /api/prices/today`, `GET /api/prices/history?metal=gold&days=7`, `GET /api/prices/change-rate`
 
+### Week 2 실행 방법 (프론트)
+
+6. **프론트 개발 서버**: `cd frontend && npm install && npm run dev` → http://localhost:3000  
+   - API가 다른 포트면 `frontend/.env`에 `NEXT_PUBLIC_API_URL=http://localhost:8000` 설정.
+7. **Docker로 전체 실행**: `docker compose up --build` → API 8000, 웹 3000.
+
 ### DB 접속 (psql)
 
 앱 DB는 사용자 `goldsilver`, DB명 `goldsilver_now` 입니다. **PowerShell에서는 아래 명령을 한 줄만 복사해서 실행**하세요 (여러 줄 붙여넣으면 이전 출력이 명령으로 실행되어 에러 납니다).
@@ -226,7 +232,7 @@ GoldSilver-Now/
 ├── docs/               # 설계 문서 (크롤러, ERD, 와이어프레임, Docker)
 ├── crawler/            # Python 크롤러·스케줄러
 ├── backend/            # FastAPI, PostgreSQL, Redis
-├── frontend/           # Next.js
+├── frontend/           # Next.js (대시보드·차트·다크모드)
 ├── docker-compose.yml
 └── README.md
 ```

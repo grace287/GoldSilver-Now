@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #d4af37;
+  --gold-light: #e8c547;
+  --up: #16a34a;
+  --down: #dc2626;
+}
+
+.dark {
+  --gold: #e8c547;
+  --gold-light: #f0d76b;
+}
+
+body {
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased;
+}

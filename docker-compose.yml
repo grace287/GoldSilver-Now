@@ -41,5 +41,16 @@ services:
       db: { condition: service_healthy }
       redis: { condition: service_healthy }
 
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://api:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
 volumes:
   pgdata:
