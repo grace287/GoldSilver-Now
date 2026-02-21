@@ -151,6 +151,14 @@
 | **Week 2** | 프론트 UI 구성, 차트 연동, 반응형 |
 | **Week 3** | Docker 세팅, 배포 (Railway or Fly.io) |
 
+### Week 1 실행 방법
+
+1. **DB·Redis 기동**: `docker compose up -d db redis`
+2. **마이그레이션**: `cd backend && alembic upgrade head`
+3. **API 서버**: `cd backend && uvicorn app.main:app --reload` → http://localhost:8000
+4. **크롤러 1회**: `cd crawler && python main.py` (주기 실행은 `python main.py --schedule`)
+5. **API 확인**: `GET /api/prices/today`, `GET /api/prices/history?metal=gold&days=7`, `GET /api/prices/change-rate`
+
 ---
 
 ## 💰 수익·확장·리스크
