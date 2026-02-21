@@ -191,12 +191,21 @@
 
 ---
 
-## 📁 프로젝트 구조 (예시)
+## 📁 프로젝트 구조 및 설계 문서
+
+자세한 설계는 `docs/` 참고.
+
+| 문서 | 설명 |
+|------|------|
+| [01-crawler-design.md](docs/01-crawler-design.md) | 크롤러 설계서 (흐름, 모듈, 설정, 에러 처리) |
+| [02-erd.md](docs/02-erd.md) | ERD (metals, prices 테이블·관계) |
+| [03-wireframe.md](docs/03-wireframe.md) | UI 와이어프레임 (메인·모바일, 컴포넌트) |
+| [04-folder-docker.md](docs/04-folder-docker.md) | 폴더 구조 + Docker·docker-compose 예시 |
 
 ```
 GoldSilver-Now/
-├── .cursor/
-│   └── rules/          # Cursor AI 규칙 (PRD·컨벤션 반영)
+├── .cursor/rules/      # Cursor AI 규칙 (PRD·컨벤션 반영)
+├── docs/               # 설계 문서 (크롤러, ERD, 와이어프레임, Docker)
 ├── crawler/            # Python 크롤러·스케줄러
 ├── backend/            # FastAPI, PostgreSQL, Redis
 ├── frontend/           # Next.js
