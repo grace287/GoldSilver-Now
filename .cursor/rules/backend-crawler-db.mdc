@@ -1,0 +1,57 @@
+---
+description: 크롤러·DB·백엔드 컨벤션 (Python, FastAPI, SQL)
+globs: **/*.py,**/alembic/**/*,**/migrations/**/*
+alwaysApply: false
+---
+
+# 백엔드·크롤러·DB
+
+## 데이터 수집
+
+- **대상**: 금 1돈 살 때/팔 때, 은 시세 (국제 금은 확장용 예약)
+- **주기**: 5~10분 간격, APScheduler 또는 Celery
+- **정제**: 크롤링 후 반드시 데이터 정제 단계 거쳐 DB 저장
+- **차단 대응**: User-Agent 로테이션·재시도·에러 로깅
+
+## 데이터 모델
+
+### metals
+
+| 컬럼   | 설명     |
+|--------|----------|
+| id     | PK       |
+| name   | gold, silver |
+| symbol | XAU, XAG |
+
+### prices
+
+| 컬럼       | 설명        |
+|------------|-------------|
+| id         | PK          |
+| metal_id   | FK → metals |
+| buy_price  | 매수가      |
+| sell_price | 매도가      |
+| created_at | 수집 시각   |
+
+- 시계열 조회·집계에 유리하도록 `created_at` 인덱스 권장
+- 금/은 구분은 `metal_id` 로만 수행 (하드코딩 금지)
+
+## 백엔드 (FastAPI)
+
+- 라우트는 `/api/` prefix 유지
+- 가격 API는 Redis 캐시 적용 권장 (빈도 높은 조회)
+- DB 접근은 서비스 레이어에서 처리, 라우터는 얇게 유지
+- 예외는 로깅 후 적절한 HTTP 상태 코드와 메시지로 반환
+
+## 예시 (에러 처리)
+
+```python
+# ❌ BAD
+except Exception:
+    pass
+
+# ✅ GOOD
+except requests.RequestException as e:
+    logger.warning("Crawl failed", extra={"url": url, "error": str(e)})
+    raise  # or retry / return default
+```

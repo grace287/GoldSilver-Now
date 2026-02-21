@@ -1,0 +1,37 @@
+---
+description: 금은나우(GoldSilver Now) 프로젝트 컨텍스트와 공통 원칙
+alwaysApply: true
+---
+
+# 금은나우 (GoldSilver Now)
+
+> 슬로건: "지금, 금과 은의 온도."
+
+## 프로젝트 정체성
+
+- **목적**: 한국금거래소 시세 기반 금·은 실시간 시세 조회 + 변동 추이 시각화 플랫폼
+- **포지션**: 크롤링 연습이 아닌 **금 데이터 SaaS / 데이터 기반 자산 플랫폼** 지향
+- **네이밍**: 프로젝트명·서비스명은 **금은나우**, 영문 **GoldSilver Now** 로 통일
+
+## 기술 스택 (아키텍처)
+
+```
+[크롤러] → [데이터 정제] → [PostgreSQL] → [FastAPI] → [Next.js]
+```
+
+- **수집**: Python, BeautifulSoup, APScheduler or Celery, 5~10분 간격
+- **백엔드**: FastAPI, PostgreSQL, Redis(캐싱), Docker
+- **프론트**: Next.js, Modern Finance Dashboard 스타일
+
+## 코딩 원칙
+
+- 한글 주석/문서는 프로젝트 내 공식 언어로 사용 가능
+- API·DB·변수명은 영문 유지 (검색·협업 고려)
+- MVP 범위 엄수: 회원가입·알림·환율·글로벌 시세는 MVP 제외
+- 확장 시 고려: 금 체온지수(GTI), 7일 평균 대비 상승률 등 Phase 2 아이디어 존재
+
+## 리스크 대응
+
+- 크롤링: User-Agent·재시도 관리
+- 데이터 오류: 로그 + 재시도
+- 서버 부하: Redis 캐시 활용
