@@ -156,8 +156,18 @@
 1. **DB·Redis 기동**: `docker compose up -d db redis`
 2. **마이그레이션**: `cd backend && alembic upgrade head`
 3. **API 서버**: `cd backend && uvicorn app.main:app --reload` → http://localhost:8000
-4. **크롤러 1회**: `cd crawler && python main.py` (주기 실행은 `python main.py --schedule`)
+4. **크롤러 1회**: 프로젝트 루트에서 `python -m crawler.main` (주기: `python -m crawler.main --schedule`). `crawler` 폴더에서 실행 시에는 `python main.py` 만 입력해도 동작함.
 5. **API 확인**: `GET /api/prices/today`, `GET /api/prices/history?metal=gold&days=7`, `GET /api/prices/change-rate`
+
+### DB 접속 (psql)
+
+앱 DB는 사용자 `goldsilver`, DB명 `goldsilver_now` 입니다. **PowerShell에서는 아래 명령을 한 줄만 복사해서 실행**하세요 (여러 줄 붙여넣으면 이전 출력이 명령으로 실행되어 에러 납니다).
+
+```powershell
+docker exec -it goldsilver-now-db-1 psql -U goldsilver -d goldsilver_now
+```
+
+종료: `\q` 입력 후 Enter.
 
 ---
 

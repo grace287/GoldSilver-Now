@@ -41,4 +41,9 @@ def save_prices(records: List[PriceRecord]) -> bool:
         return True
     except Exception as e:
         logger.error("Save prices failed: %s", e)
+        if "does not exist" in str(e) or "relation" in str(e).lower():
+            logger.error(
+                "DB 테이블이 없습니다. 먼저 backend에서 마이그레이션을 실행하세요: "
+                "cd backend && alembic upgrade head"
+            )
         return False
