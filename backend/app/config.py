@@ -9,7 +9,8 @@ class Settings(BaseSettings):
 
     # Redis (optional, for cache)
     redis_url: str = "redis://localhost:6379/0"
-    cache_ttl_seconds: int = 300  # 5 min for today/change-rate
+    cache_ttl_seconds: int = 300  # default
+    cache_ttl_today_seconds: int = 60  # today/change-rate: 크롤링 반영을 위해 1분
 
     # App
     app_name: str = "금은나우 API"

@@ -1,18 +1,24 @@
-import { fetchToday, fetchChangeRate, fetchHistory } from "@/lib/api";
+import { fetchToday, fetchChangeRate, fetchHistory, getApiUrl } from "@/lib/api";
+import type { PriceHistoryResponse } from "@/lib/api";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { TodaySummaryCard } from "@/components/TodaySummaryCard";
 import { PriceCard } from "@/components/PriceCard";
 import { PriceChart } from "@/components/PriceChart";
+import { RefreshButton } from "@/components/RefreshButton";
 
-export const revalidate = 60;
+export const revalidate = 0;
+
+const emptyHistory = (metal: "gold" | "silver"): PriceHistoryResponse => ({ metal, items: [] });
 
 export default async function Home() {
   let today = { gold: null, silver: null } as Awaited<ReturnType<typeof fetchToday>>;
   let changeRate = { gold: null, silver: null } as Awaited<ReturnType<typeof fetchChangeRate>>;
-  let historyGold7 = { metal: "gold" as const, items: [] };
-  let historyGold30 = { metal: "gold" as const, items: [] };
-  let historySilver7 = { metal: "silver" as const, items: [] };
-  let historySilver30 = { metal: "silver" as const, items: [] };
+  let historyGold7: PriceHistoryResponse = emptyHistory("gold");
+  let historyGold30: PriceHistoryResponse = emptyHistory("gold");
+  let historySilver7: PriceHistoryResponse = emptyHistory("silver");
+  let historySilver30: PriceHistoryResponse = emptyHistory("silver");
+  let apiError: string | null = null;
 
   try {
     const [todayRes, changeRateRes, hg7, hg30, hs7, hs30] = await Promise.all([
@@ -30,13 +36,37 @@ export default async function Home() {
     historySilver7 = hs7;
     historySilver30 = hs30;
   } catch (e) {
+    const message = e instanceof Error ? e.message : "API 요청 실패";
+    apiError = message;
     console.error("API fetch error:", e);
   }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      {apiError && (
+        <div
+          className="mx-4 mt-4 p-4 rounded-lg bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-sm"
+          role="alert"
+        >
+          <strong>시세 API에 연결할 수 없습니다.</strong>
+          <p className="mt-1">{apiError}</p>
+          <p className="mt-2 opacity-90">
+            <code className="bg-black/10 dark:bg-white/10 px-1 rounded">NEXT_PUBLIC_API_URL</code>이
+            백엔드 주소와 같은지 확인하고, 백엔드를 실행한 뒤 새로고침하세요. (현재: {getApiUrl()})
+          </p>
+        </div>
+      )}
       <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-8 space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <TodaySummaryCard
+            gold={today.gold}
+            silver={today.silver}
+            changeGold={changeRate.gold ?? null}
+            changeSilver={changeRate.silver ?? null}
+          />
+          <RefreshButton />
+        </div>
         <PriceCard
           title="오늘의 금 시세"
           subtitle="금 1돈 (3.75g)"

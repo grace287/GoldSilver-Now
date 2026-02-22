@@ -161,8 +161,8 @@
 
 ### Week 2 실행 방법 (프론트)
 
-6. **프론트 개발 서버**: `cd frontend && npm install && npm run dev` → http://localhost:3000  
-   - API가 다른 포트면 `frontend/.env`에 `NEXT_PUBLIC_API_URL=http://localhost:8000` 설정.
+6. **프론트 개발 서버**: `cd frontend && npm run dev` → http://localhost:3000  
+   - **API는 기본 8000 포트.** `frontend/.env`에 `NEXT_PUBLIC_API_URL=http://localhost:8000` 로 맞출 것 (8080이면 연결 안 됨).
 7. **Docker로 전체 실행**: `docker compose up --build` → API 8000, 웹 3000.
 
 ### Week 3 실행 방법 (Docker·배포)
@@ -180,6 +180,14 @@ docker exec -it goldsilver-now-db-1 psql -U goldsilver -d goldsilver_now
 ```
 
 종료: `\q` 입력 후 Enter.
+
+### 데이터가 프론트에 안 나올 때
+
+**한 가지부터 순서대로** 점검하려면 → **[docs/06-troubleshooting.md](docs/06-troubleshooting.md)** 참고.
+
+- **API 포트**: `frontend/.env`의 `NEXT_PUBLIC_API_URL`이 백엔드 실제 포트와 같아야 함 (예: 8080). 수정 후 프론트 재시작.
+- **metals**: 마이그레이션으로만 채워짐. 비어 있으면 시세 조회 안 됨 → `alembic upgrade head` 또는 수동 시드.
+- **연결 실패 시**: 화면에 "시세 API에 연결할 수 없습니다" 배너가 뜨면 URL/백엔드 실행 여부 확인.
 
 ---
 
@@ -232,6 +240,7 @@ docker exec -it goldsilver-now-db-1 psql -U goldsilver -d goldsilver_now
 | [03-wireframe.md](docs/03-wireframe.md) | UI 와이어프레임 (메인·모바일, 컴포넌트) |
 | [04-folder-docker.md](docs/04-folder-docker.md) | 폴더 구조 + Docker·docker-compose 예시 |
 | [05-deploy.md](docs/05-deploy.md) | 배포 가이드 (Railway, Fly.io) |
+| [06-troubleshooting.md](docs/06-troubleshooting.md) | **데이터가 프론트에 안 나올 때** 점검 (크롤러→DB→API→프론트) |
 
 ```
 GoldSilver-Now/

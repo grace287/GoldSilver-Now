@@ -1,4 +1,8 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+/** 프론트와 백엔드 포트가 같아야 함 (예: 8080). .env의 NEXT_PUBLIC_API_URL 확인 */
+export const getApiUrl = () =>
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+const API_URL = getApiUrl();
 
 export interface PriceTodayItem {
   metal: "gold" | "silver";
@@ -38,9 +42,12 @@ export interface ChangeRateResponse {
   silver: ChangeRateItem | null;
 }
 
+/** 캐시 없이 매번 API에서 최신 데이터 가져오기 (크롤링 반영 빠르게) */
+const noStore = { cache: "no-store" as RequestCache };
+
 export async function fetchToday(): Promise<PriceTodayResponse> {
-  const res = await fetch(`${API_URL}/api/prices/today`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error("Failed to fetch today");
+  const res = await fetch(`${API_URL}/api/prices/today`, noStore);
+  if (!res.ok) throw new Error(`Failed to fetch today: ${res.status}`);
   return res.json();
 }
 
@@ -50,14 +57,14 @@ export async function fetchHistory(
 ): Promise<PriceHistoryResponse> {
   const res = await fetch(
     `${API_URL}/api/prices/history?metal=${metal}&days=${days}`,
-    { next: { revalidate: 120 } }
+    noStore
   );
-  if (!res.ok) throw new Error("Failed to fetch history");
+  if (!res.ok) throw new Error(`Failed to fetch history: ${res.status}`);
   return res.json();
 }
 
 export async function fetchChangeRate(): Promise<ChangeRateResponse> {
-  const res = await fetch(`${API_URL}/api/prices/change-rate`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error("Failed to fetch change rate");
+  const res = await fetch(`${API_URL}/api/prices/change-rate`, noStore);
+  if (!res.ok) throw new Error(`Failed to fetch change rate: ${res.status}`);
   return res.json();
 }

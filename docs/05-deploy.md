@@ -156,4 +156,4 @@ docker compose up --build
 
 ---
 
-*이전: [04-folder-docker.md](./04-folder-docker.md)*
+*이전: [04-folder-docker.md](./04-folder-docker.md) | 다음: [06-troubleshooting.md](./06-troubleshooting.md)*
