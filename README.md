@@ -165,6 +165,12 @@
    - API가 다른 포트면 `frontend/.env`에 `NEXT_PUBLIC_API_URL=http://localhost:8000` 설정.
 7. **Docker로 전체 실행**: `docker compose up --build` → API 8000, 웹 3000.
 
+### Week 3 실행 방법 (Docker·배포)
+
+8. **로컬 프로덕션 테스트**: `docker compose up --build` (DB·Redis·API·Web 한 번에)
+9. **배포**: Railway 또는 Fly.io — 상세 절차는 [docs/05-deploy.md](docs/05-deploy.md) 참고.  
+   - DB 생성 → 마이그레이션(`alembic upgrade head`) → API 배포 → Web 배포 시 `NEXT_PUBLIC_API_URL` 설정.
+
 ### DB 접속 (psql)
 
 앱 DB는 사용자 `goldsilver`, DB명 `goldsilver_now` 입니다. **PowerShell에서는 아래 명령을 한 줄만 복사해서 실행**하세요 (여러 줄 붙여넣으면 이전 출력이 명령으로 실행되어 에러 납니다).
@@ -225,6 +231,7 @@ docker exec -it goldsilver-now-db-1 psql -U goldsilver -d goldsilver_now
 | [02-erd.md](docs/02-erd.md) | ERD (metals, prices 테이블·관계) |
 | [03-wireframe.md](docs/03-wireframe.md) | UI 와이어프레임 (메인·모바일, 컴포넌트) |
 | [04-folder-docker.md](docs/04-folder-docker.md) | 폴더 구조 + Docker·docker-compose 예시 |
+| [05-deploy.md](docs/05-deploy.md) | 배포 가이드 (Railway, Fly.io) |
 
 ```
 GoldSilver-Now/
