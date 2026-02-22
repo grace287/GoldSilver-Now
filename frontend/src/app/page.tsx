@@ -73,6 +73,14 @@ export default async function Home() {
           today={today.gold}
           changeRate={changeRate.gold ?? null}
         />
+        <section className="space-y-1">
+          <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            지난 시세 (1주일 · 1개월 · 3개월 · 6개월 · 1년 · 3년 · 5년)
+          </h2>
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            금액(원) 기준, 살 때·팔 때 색으로 구분. 마우스 오버 시 상세 표시. 크롤러를 주기적으로 실행하면 날짜별 데이터가 쌓입니다.
+          </p>
+        </section>
         <PriceChart
           metal="gold"
           items7={historyGold7.items}
@@ -80,10 +88,9 @@ export default async function Home() {
         />
         <PriceCard
           title="오늘의 은 시세"
-          subtitle="은 시세"
+          subtitle="은 1g 기준"
           today={today.silver}
           changeRate={changeRate.silver ?? null}
-          singlePriceLabel="/ 1g"
         />
         <PriceChart
           metal="silver"

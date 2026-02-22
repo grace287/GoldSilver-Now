@@ -47,10 +47,10 @@ def get_today(db: Session = Depends(get_db)):
 @router.get("/history", response_model=PriceHistoryResponse)
 def get_history(
     metal: str = Query(..., pattern="^(gold|silver)$"),
-    days: int = Query(30, ge=1, le=90),
+    days: int = Query(30, ge=1, le=1825),
     db: Session = Depends(get_db),
 ):
-    """기간별 시세 (metal=gold|silver, days=7|30 등)."""
+    """기간별 시세 (metal=gold|silver, days=7~1825, 최대 5년)."""
     items = price_service.get_history(db, metal=metal, days=days)
     out = PriceHistoryResponse(metal=metal, items=items)
     return JSONResponse(
