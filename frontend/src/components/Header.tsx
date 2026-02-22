@@ -14,7 +14,7 @@ export function Header() {
             금은나우 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">(GoldSilver Now)</span>
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            지금, 금과 은의 온도.
+            지금, 금과 은의 시세표.
           </p>
         </div>
         <button

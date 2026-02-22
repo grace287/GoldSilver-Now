@@ -7,6 +7,15 @@ function formatPrice(n: number): string {
   return new Intl.NumberFormat("ko-KR").format(n);
 }
 
+function formatTodayDate(): string {
+  return new Date().toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "short",
+  });
+}
+
 function ChangePill({ percent }: { percent: number }) {
   const up = percent >= 0;
   return (
@@ -36,47 +45,56 @@ export function TodaySummaryCard({
   changeSilver,
 }: TodaySummaryCardProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/80 px-4 py-3 shadow-sm flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-lg shrink-0" aria-hidden>🟡</span>
-          <div className="min-w-0">
-            <p className="text-xs text-gray-500 dark:text-gray-400">금 1돈</p>
+    <section
+      className="rounded-2xl border-l-4 border-gold bg-amber-50/80 dark:bg-amber-950/20 dark:border-gold shadow-md overflow-hidden"
+      aria-label="오늘의 시세 요약"
+    >
+      <div className="flex flex-col sm:flex-row sm:items-stretch gap-0 sm:gap-0">
+        {/* 왼쪽: 오늘 날짜 */}
+        <div className="flex sm:flex-col justify-center sm:justify-center items-center sm:items-center py-3 sm:py-6 px-4 sm:px-6 bg-white/60 dark:bg-gray-800/40 sm:min-w-[140px] border-b sm:border-b-0 sm:border-r border-amber-200/60 dark:border-amber-800/40">
+          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Today</p>
+          <p className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 mt-0.5 sm:mt-2">
+            {formatTodayDate()}
+          </p>
+        </div>
+        {/* 오른쪽: 금·은 카드 */}
+        <div className="flex-1 grid grid-cols-2 gap-3 p-4 sm:p-5">
+          <div className="flex flex-col justify-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">금 1돈 · 살 때</p>
             {gold ? (
-              <p className="text-base sm:text-lg font-bold text-gold truncate">
-                살 때 ₩{formatPrice(gold.buy_price)} · 팔 때 ₩{formatPrice(gold.sell_price)}
-              </p>
+              <>
+                <p className="text-xl sm:text-2xl font-bold text-gold tracking-tight">
+                  ₩{formatPrice(gold.buy_price)}
+                </p>
+                {changeGold && (
+                  <div className="mt-2">
+                    <ChangePill percent={changeGold.buy_change_percent} />
+                  </div>
+                )}
+              </>
             ) : (
               <p className="text-sm text-gray-400">—</p>
             )}
           </div>
-        </div>
-        {changeGold && (
-          <div className="shrink-0">
-            <ChangePill percent={changeGold.buy_change_percent} />
-          </div>
-        )}
-      </div>
-      <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/80 px-4 py-3 shadow-sm flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-lg shrink-0" aria-hidden>⚪</span>
-          <div className="min-w-0">
-            <p className="text-xs text-gray-500 dark:text-gray-400">은 1g</p>
+          <div className="flex flex-col justify-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">은 1g · 살 때</p>
             {silver ? (
-              <p className="text-base sm:text-lg font-bold text-gold truncate">
-                ₩{formatPrice(silver.buy_price)}/g
-              </p>
+              <>
+                <p className="text-xl sm:text-2xl font-bold text-gold tracking-tight">
+                  ₩{formatPrice(silver.buy_price)}
+                </p>
+                {changeSilver && (
+                  <div className="mt-2">
+                    <ChangePill percent={changeSilver.buy_change_percent} />
+                  </div>
+                )}
+              </>
             ) : (
               <p className="text-sm text-gray-400">—</p>
             )}
           </div>
         </div>
-        {changeSilver && (
-          <div className="shrink-0">
-            <ChangePill percent={changeSilver.buy_change_percent} />
-          </div>
-        )}
       </div>
-    </div>
+    </section>
   );
 }

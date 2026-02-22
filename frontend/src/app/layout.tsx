@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "금은나우 | GoldSilver Now",
-  description: "지금, 금과 은의 온도. 금·은 실시간 시세와 변동 추이.",
+  description: "지금, 금과 은의 시세. 금·은 실시간 시세와 변동 추이.",
 };
 
 export default function RootLayout({
